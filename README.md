@@ -14,4 +14,4 @@ pip2 install -r gerekler
  
 ### çalıştırmak için
 
-python sunucu.py
+./sunucu.py

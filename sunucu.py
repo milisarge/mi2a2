@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, disconnect
