@@ -7,6 +7,7 @@ Milisia İşlevsel İrc Ağ Arayüzü
 git clone https://github.com/milisarge/mi2a2 /opt/mi2a2
 
 cd /opt/mi2a2
+
 pip2 install -r gerekler
 
 ### profil.py dosyasında rumuzunuzu ayarlayabilirsiniz.
