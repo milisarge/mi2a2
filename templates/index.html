@@ -43,6 +43,7 @@
 			if (msg.gonderen){
 				
 				if( gonderen.search('(sen)') >= 0){
+					$('#gonder_veri').val("");
 					avatar="atilla.png"
 				}else{
 					avatar="avatar2.png"
@@ -74,6 +75,8 @@
 				if( emojiyap ){
 					$(".chatyazi").emotions();
 				}
+				myscroll = $('.panel-body');
+				myscroll.scrollTop(myscroll.get(0).scrollHeight);
 				
 			}else{
 				console.log("gonderen eksik")
@@ -86,7 +89,7 @@
 		window.setInterval(function() {
 			start_time = (new Date).getTime();
 			socket.emit('ping_olay');
-		}, 4000);
+		}, 1000);
 
 		// sunucunun ping e verdiği cevap işlenmesi (pong)
 		socket.on('pong_olay', function() {
@@ -155,14 +158,14 @@
                 </div>
                 <div class="panel-body">
                     <ul class="chat" id="chat">
-                        
-                       
                     </ul>
                 </div>
                 <form id="gonder" method="POST" action="#">
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input name="gonder_veri" id="gonder_veri" type="text" class="form-control input-sm" placeholder="Mesajınızı buraya yazın..." />
+                        <div class="col-xs-8">
+						  <input name="gonder_veri" id="gonder_veri" type="text" class="form-control" placeholder="Mesajınızı buraya yazın..." />
+						</div>
                         <span class="input-group-btn">
                             <input type="submit" class="btn btn-warning btn-sm" value="Gönder">
                         </span>

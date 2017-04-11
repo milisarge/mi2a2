@@ -1,6 +1,6 @@
-# milisia-irc
+#  Mİ2A2
 
-Milisia Web Tabanlı Etkileşimli İrc Arayüzü
+Milisia İşlevsel İrc Ağ Arayüzü
 
 ### ilk önce gerekleri yükleyiniz.
 
