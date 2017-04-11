@@ -45,8 +45,8 @@ class MilisBot(irc.bot.SingleServerIRCBot):
     def on_welcome(self, c, e):
 		print "welcome isledi"
 		c.join(self.channel)
-		mesaj=kanal+" bağlandınız."
-		gonderen="milisia-irc sunucusu"
+		mesaj=kanal+" kanalına bağlandınız."
+		gonderen="Mİ2A2 sunucusu"
 		socketio.emit('kanala_gonder_cevap',{'data': mesaj,'gonderen':gonderen},namespace='/irc')
 
     def on_privmsg(self, c, e):
