@@ -4,7 +4,7 @@ Milisia İşlevsel İrc Ağ Arayüzü
 
 ### ilk önce gerekleri yükleyiniz.
 
-git clone https://github.com/milisarge/milisia-irc /opt/milisia-irc
+git clone https://github.com/milisarge/mi2a2 /opt/mi2a2
 
 cd /opt/milisia-irc
 
