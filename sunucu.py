@@ -43,7 +43,11 @@ class MilisBot(irc.bot.SingleServerIRCBot):
         c.nick(c.get_nickname() + "_")
 
     def on_welcome(self, c, e):
-        c.join(self.channel)
+		print "welcome isledi"
+		c.join(self.channel)
+		mesaj=kanal+" bağlandınız."
+		gonderen="milisia-irc sunucusu"
+		socketio.emit('kanala_gonder_cevap',{'data': mesaj,'gonderen':gonderen},namespace='/irc')
 
     def on_privmsg(self, c, e):
         print "priv:",c
@@ -127,7 +131,7 @@ def sunucu_olay(message):
 @socketio.on('kanala_gonder', namespace='/irc')
 def kanala_gonder(mesaj):
     #session['receive_count'] = session.get('receive_count', 0) + 1
-    gonderen="sen"
+    gonderen=rumuz+" (sen)"
     mesajveri=mesaj['data']
     global bot
     bot.gonder(mesajveri)

@@ -38,9 +38,11 @@
 		socket.on('kanala_gonder_cevap', function(msg) {
 			var avatar="";
 			var emojiyap=false;
+			var gonderen=String(msg.gonderen);
 			
 			if (msg.gonderen){
-				if (msg.gonderen=="sen"){
+				
+				if( gonderen.search('(sen)') >= 0){
 					avatar="atilla.png"
 				}else{
 					avatar="avatar2.png"
@@ -52,10 +54,10 @@
 				}
 				else if( icerik.search("youtube.com/watch") >= 0){
 					icerik=icerik.replace("watch?v=","embed/")
-					console.log(icerik)
 					icerik="<iframe id=video width=420 height=315 src='"+icerik+"'?rel=0 frameborder=0 allowfullscreen></iframe>"
 				}else{
 					emojiyap=true;
+					icerik='<div class="chatyazi" ><span>'+icerik+'</span></div>'
 				}
 				// ayarlı biçimde düzenlenerek mesajın gösterilmesi
 				//eski icerik ekleme
@@ -70,7 +72,7 @@
 				
 				$('#chat').append(yenimesaj);
 				if( emojiyap ){
-					$("#chat").emotions();
+					$(".chatyazi").emotions();
 				}
 				
 			}else{
@@ -117,7 +119,7 @@
 	
 	function tarihAl() {
 		var date = new Date();
-		var str = (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+		var str = (date.getMonth() + 1) + "-" + date.getDate() + " / " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 		//date.getFullYear() + "-" + 
 		return str;
 	}
