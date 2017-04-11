@@ -7,7 +7,7 @@
 --->
 <script src="../static/js/jquery.min.js"></script>
 <script src="../static/js/socket.io.min.js"></script>
-<script src="../static/js/jQueryEmoji.js"></script>
+<script src="../static/js/jquery.emotions.js"></script>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="./static/bootstrap/css/bootstrap.min.css" />
@@ -37,6 +37,8 @@
 		// kanal gönderinin işlenmesi
 		socket.on('kanala_gonder_cevap', function(msg) {
 			var avatar="";
+			var emojiyap=false;
+			
 			if (msg.gonderen){
 				if (msg.gonderen=="sen"){
 					avatar="atilla.png"
@@ -53,10 +55,7 @@
 					console.log(icerik)
 					icerik="<iframe id=video width=420 height=315 src='"+icerik+"'?rel=0 frameborder=0 allowfullscreen></iframe>"
 				}else{
-					//console.log(icerik.Emoji());
-					$('.chatsatir').Emoji();
-					icerik="<span class=chatsatir>"+icerik+"</span>"
-					
+					emojiyap=true;
 				}
 				// ayarlı biçimde düzenlenerek mesajın gösterilmesi
 				//eski icerik ekleme
@@ -70,7 +69,9 @@
 				<p>'+icerik+'</p></div></li>'
 				
 				$('#chat').append(yenimesaj);
-				
+				if( emojiyap ){
+					$("#chat").emotions();
+				}
 				
 			}else{
 				console.log("gonderen eksik")
