@@ -16,7 +16,7 @@ app.config['SECRET_KEY'] = 's324fvre7reB!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 
-rumuz="milis_"+str(randint(1000,9999))
+rumuz="milis_"+str(randint(1001,9999))
 kanal="#milisarge"
 ircsunucu="irc.freenode.net"
 ircport=6667
