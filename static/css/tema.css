@@ -58,12 +58,3 @@
     background-color: #555;
 }
 
-@media (min-width: 992px) {
-    .col-md-border:not(:last-child) {
-        border-right: 1px solid #d7d7d7;
-    }
-    .col-md-border + .col-md-border {
-        border-left: 1px solid #d7d7d7;
-        margin-left: -1px;
-    }
-}
