@@ -47,9 +47,8 @@ class MilisBot(irc.bot.SingleServerIRCBot):
 		#mesaj=kanal+" kanalına bağlandınız."
 		gonderen=e.source#"Mİ2A2 sunucusu"
 		mesaj = e.arguments
-		socketio.emit('kanala_gonder_cevap',{'data': mesaj,'gonderen':gonderen},namespace='/irc')
-		print "islem"
-		print "--",self.channels[self.channel]
+		socketio.emit('ircbag_cevap',{'data': mesaj,'gonderen':gonderen},namespace='/irc')
+		
     def on_privmsg(self, c, e):
         print "priv:",c
         print "priv:",e

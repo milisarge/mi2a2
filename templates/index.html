@@ -31,7 +31,12 @@
 
 		// sunucunun gönderdiği verinin işlenmesi-yakalanması
 		socket.on('sunucu_cevap', function(msg) {
-			$('#chatalan').append('<br>' + $('<div/>').text(msg.data).html());
+			$('#chat').append('<br>' + $('<div/>').text(msg.data).html());
+		});
+		
+		socket.on('ircbag_cevap', function(msg) {
+			$('#chat').append('<br>' + $('<div/>').text(msg.data).html());
+			
 		});
 		
 		// kanala gönderinin işlenmesi
