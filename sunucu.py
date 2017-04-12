@@ -156,7 +156,7 @@ def connect():
     if thread is None:
        #thread = socketio.start_background_task(target=arkaplan_islem)
        thread = socketio.start_background_task(target=ircbot)
-    emit('sunucu_cevap', {'data': 'Bağlandın', 'count': 0})
+    emit('sunucu_cevap', {'data': 'Bekleyiniz...', 'count': 0})
 
 '''
 @socketio.on('disconnect', namespace='/irc')

@@ -31,6 +31,7 @@
 
 		// sunucunun gönderdiği verinin işlenmesi-yakalanması
 		socket.on('sunucu_cevap', function(msg) {
+			//chatlog alanı tanımlayıp loglar düşürelecek.
 			$('#chat').append('<br>' + $('<div/>').text(msg.data).html());
 		});
 		
