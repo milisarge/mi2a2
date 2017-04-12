@@ -34,12 +34,23 @@
 			$('#chatalan').append('<br>' + $('<div/>').text(msg.data).html());
 		});
 		
-		// kanal gönderinin işlenmesi
+		// kanala gönderinin işlenmesi
 		socket.on('kanala_gonder_cevap', function(msg) {
 			var avatar="";
 			var emojiyap=false;
 			var gonderen=String(msg.gonderen);
+			var listehtml="";
 			
+			if (msg.kliste){
+				console.log(msg.kliste);
+				liste=msg.kliste;
+				for (i = 0; i < liste.length; i++) {
+					listehtml += '<li class="list-group-item">' + liste[i] + '</li>';
+				}
+				$('#bliste').html("");
+				$('#bliste').append(listehtml);
+			}
+
 			if (msg.gonderen){
 				
 				if( gonderen.search('(sen)') >= 0){
@@ -118,6 +129,7 @@
 			socket.emit('baglantikes_istegi');
 			return false;
 		});
+		
 	});
 	
 	function tarihAl() {
@@ -134,8 +146,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary">
-                <div class="panel-heading">
-                    
+                <div class="panel-heading"> 
                     <span class="glyphicon glyphicon-comment"></span> Mİ2A2 - MİLİSİA İŞLEVSEL İRC AĞ ARAYÜZÜ
                     <div class="btn-group pull-right">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -156,10 +167,20 @@
                         </ul>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <ul class="chat" id="chat">
-                    </ul>
-                </div>
+				<div class="yanpanel col-xs-2">
+					<br>
+					<span class="form-control">Bağlantı Liste</span>
+					<hr>
+					<ul class="list-group" id="bliste" name="bliste">
+					</ul>
+				</div>
+				
+				<div class="panel-body">
+					<ul class="chat col-xs-12" id="chat">
+						
+					</ul>
+				</div>
+               
                 <form id="gonder" method="POST" action="#">
                 <div class="panel-footer">
                     <div class="input-group">
@@ -173,6 +194,7 @@
                 </div>
                 </form>
                 <p>Ortalama ping hızı: <b><span id="ping-pong"></span>ms</b></p>
+				</form>
             </div>
         </div>
     </div>

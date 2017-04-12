@@ -43,10 +43,10 @@ class MilisBot(irc.bot.SingleServerIRCBot):
         c.nick(c.get_nickname() + "_")
 
     def on_welcome(self, c, e):
-		print "welcome isledi"
 		c.join(self.channel)
-		mesaj=kanal+" kanalına bağlandınız."
-		gonderen="Mİ2A2 sunucusu"
+		#mesaj=kanal+" kanalına bağlandınız."
+		gonderen=e.source#"Mİ2A2 sunucusu"
+		mesaj = e.arguments
 		socketio.emit('kanala_gonder_cevap',{'data': mesaj,'gonderen':gonderen},namespace='/irc')
 
     def on_privmsg(self, c, e):
@@ -55,10 +55,10 @@ class MilisBot(irc.bot.SingleServerIRCBot):
         self.do_command(e, e.arguments[0])
 
     def on_pubmsg(self, c, e):
+        bliste=self.kanal_liste()
         gonderen = e.source.nick
-        print "arg-*",e.arguments
         mesaj = e.arguments
-        socketio.emit('kanala_gonder_cevap',{'data': mesaj,'gonderen':gonderen},namespace='/irc')
+        socketio.emit('kanala_gonder_cevap',{'data': mesaj,'gonderen':gonderen,'kliste':bliste},namespace='/irc')
         a = e.arguments[0].split(":", 1)
         if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname()):
             self.do_command(e, a[1].strip())
@@ -135,10 +135,10 @@ def kanala_gonder(mesaj):
     mesajveri=mesaj['data']
     global bot
     bot.gonder(mesajveri)
-    liste=bot.kanal_liste()
-    print liste
+    bliste=bot.kanal_liste()
+    print bliste
     #emit('kanala_gonder_cevap',{'data': message['data'], 'count': session['receive_count']})
-    emit('kanala_gonder_cevap',{'data': mesajveri,'gonderen':gonderen})
+    emit('kanala_gonder_cevap',{'data': mesajveri,'gonderen':gonderen,'kliste':bliste})
 
 @socketio.on('baglantikes_istegi', namespace='/irc')
 def baglantikes_istegi():
