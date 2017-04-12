@@ -1,0 +1,9 @@
+[Desktop Entry]
+Path=/opt/mi2a2
+Name=MI2A2
+Comment=Milisia İşlevsel İrc Ağ Arayüzü
+Exec=./mi2a2.sh
+Terminal=false
+Type=Application
+Icon=/opt/mi2a2/static/img/mi2a2.png
+Categories=Network;
