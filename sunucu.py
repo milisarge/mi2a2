@@ -48,6 +48,10 @@ class MilisBot(irc.bot.SingleServerIRCBot):
 		gonderen=e.source#"Mİ2A2 sunucusu"
 		mesaj = e.arguments
 		socketio.emit('ircbag_cevap',{'data': mesaj,'gonderen':gonderen},namespace='/irc')
+	
+    def on_namreply(self, c, e):
+		bliste=self.kanal_liste()
+		socketio.emit('kanala_gonder_cevap',{'data': "sistem yüklendi.",'gonderen':"Mİ2A2 sunucusu",'kliste':bliste},namespace='/irc')
 		
     def on_privmsg(self, c, e):
         print "priv:",c
@@ -128,6 +132,11 @@ def sunucu_olay(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('sunucu_cevap',{'data': message['data'], 'count': session['receive_count']})
 
+@socketio.on('sunucu_baglanti_olay', namespace='/irc')
+def sunucu_baglanti_olay(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('sunucu_baglanti_cevap',{'data': message['data'], 'count': session['receive_count']})
+
 @socketio.on('kanala_gonder', namespace='/irc')
 def kanala_gonder(mesaj):
     #session['receive_count'] = session.get('receive_count', 0) + 1
@@ -156,6 +165,7 @@ def connect():
     if thread is None:
        #thread = socketio.start_background_task(target=arkaplan_islem)
        thread = socketio.start_background_task(target=ircbot)
+    #socket.io bağlanma iletisi
     emit('sunucu_cevap', {'data': 'Bekleyiniz...', 'count': 0})
 
 '''

@@ -26,7 +26,7 @@
 
 		// sunucuya yeni bir bağlantı oluştugunda oluşturulan olay ve yakalanması
 		socket.on('connect', function() {
-			socket.emit('sunucu_olay', {data: 'Bağlandın!'});
+			socket.emit('sunucu_baglanti_olay', {data: 'Bağlandı!'});
 		});
 
 		// sunucunun gönderdiği verinin işlenmesi-yakalanması
