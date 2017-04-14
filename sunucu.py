@@ -145,7 +145,6 @@ def kanala_gonder(mesaj):
     global bot
     bot.gonder(mesajveri)
     bliste=bot.kanal_liste()
-    print bliste
     #emit('kanala_gonder_cevap',{'data': message['data'], 'count': session['receive_count']})
     emit('kanala_gonder_cevap',{'data': mesajveri,'gonderen':gonderen,'kliste':bliste})
 
@@ -161,12 +160,18 @@ def ping_olay():
 
 @socketio.on('connect', namespace='/irc')
 def connect():
-    global thread
-    if thread is None:
-       #thread = socketio.start_background_task(target=arkaplan_islem)
-       thread = socketio.start_background_task(target=ircbot)
-    #socket.io bağlanma iletisi
-    emit('sunucu_cevap', {'data': 'Bekleyiniz...', 'count': 0})
+	global thread
+	if thread is None:
+		#thread = socketio.start_background_task(target=arkaplan_islem)
+		thread = socketio.start_background_task(target=ircbot)
+		#socket.io bağlanma iletisi
+		emit('sunucu_cevap', {'data': 'Bekleyiniz...', 'count': 0})
+	else:
+		bliste=bot.kanal_liste()
+		socketio.emit('kanala_gonder_cevap',{'data': "sayfa yenilendi.",'gonderen':"Mİ2A2 sunucusu",'kliste':bliste},namespace='/irc')
+
+	
+		
 
 '''
 @socketio.on('disconnect', namespace='/irc')
