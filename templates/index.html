@@ -130,10 +130,53 @@
 			return false;
 		});
 		
+		$('form#yukle').submit(function(event) {
+			var image_file = $('#imgInp').get(0).files[0];
+			
+			var url  = 'https://milis-linux.appspot.com/upload';
+			var formData = new FormData();
+			formData.append("img", image_file);
+
+			$.ajax({
+			  url: url,
+			  type: 'POST',
+			  data: formData,
+			  contentType: false,
+			  processData: false,
+			  success: function (linkveri) {
+				linkveri=linkveri.replace(/[\n\r]+/g, '');
+				socket.emit('kanala_gonder', {data: linkveri});
+				return false;
+			  }
+			});
+			
+			return false;
+		});
+		/* bu metot sunucuya yukleyip link döndürür
+		$('form#yukle').submit(function(event) {
+			var image_file = $('#imgInp').get(0).files[0];
+			socket.emit('dosya_yukle', {file: image_file,isim :$('#imgInp').val() });
+			return false;
+		});
+		*/
 		$('form#baglantikes').submit(function(event) {
 			socket.emit('baglantikes_istegi');
 			return false;
 		});
+		
+		
+		$(document).on('change', '.btn-file :file', function() {
+			var input = $(this),
+			label = $('#imgInp').val()
+		});
+		
+		$("#imgInp").change(function(){
+		    //readURL(this);
+		    $("#yukleislem").click();
+		}); 
+		
+		
+		
 		
 	});
 	
@@ -142,6 +185,19 @@
 		var str = (date.getMonth() + 1) + "-" + date.getDate() + " / " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 		//date.getFullYear() + "-" + 
 		return str;
+	}
+	
+	// önizleme metotu
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			
+			reader.onload = function (e) {
+				$('#img-upload').attr('src', e.target.result);
+			}
+			
+		    reader.readAsDataURL(input.files[0]);
+		}
 	}
 	
 </script>
@@ -181,23 +237,34 @@
 				</div>
 				
 				<div class="panel-body">
-					<ul class="chat col-xs-12" id="chat">
+					<ul class="chat col-xs-14" id="chat">
 						
 					</ul>
 				</div>
                
-                <form id="gonder" method="POST" action="#">
                 <div class="panel-footer">
+                    
                     <div class="input-group">
-                        <div class="col-xs-8">
-						  <input name="gonder_veri" id="gonder_veri" type="text" class="form-control" placeholder="Mesajınızı buraya yazın..." />
-						</div>
-                        <span class="input-group-btn">
-                            <input type="submit" class="btn btn-warning btn-sm" value="Gönder">
-                        </span>
+                        <form id="gonder" method="POST" action="#">
+							<input name="gonder_veri" id="gonder_veri" type="text" class="form-control" placeholder="Mesajınızı buraya yazın..." />
+							<span class="input-group-btn">
+							<input type="submit" class="btn btn-warning btn-md" value="Gönder">
+							</span>
+						</form>
+					</div>
+					<div class="input-group">
+						<form id="yukle" method="POST" action="#">
+							<span class="input-group-btn">
+								<span class="btn btn-default btn-file">
+									YÜKLE <input type="file" id="imgInp">	
+								</span>
+							</span>
+							
+							<input id="yukleislem" name="yukleislem" type="submit" class="hidden btn btn-warning btn-md"  value="yükle">
+						</form>
                     </div>
                 </div>
-                </form>
+                
                 <p>Ortalama ping hızı: <b><span id="ping-pong"></span>ms</b></p>
 				</form>
             </div>

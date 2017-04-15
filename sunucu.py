@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
+import os
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, disconnect
 import irc.bot
@@ -146,6 +147,23 @@ def kanala_gonder(mesaj):
     bot.gonder(mesajveri)
     bliste=bot.kanal_liste()
     #emit('kanala_gonder_cevap',{'data': message['data'], 'count': session['receive_count']})
+    emit('kanala_gonder_cevap',{'data': mesajveri,'gonderen':gonderen,'kliste':bliste})
+
+@socketio.on('dosya_yukle', namespace='/irc')
+def dosya_yukle(mesaj):
+    gonderen=rumuz+" (sen)"
+    dveri=mesaj["file"]
+    disim=mesaj["isim"]
+    dosya="/tmp/"+disim
+    dosya2="/tmp/link_"+disim+".txt"
+    open(dosya,"w").write(dveri)
+    os.system("curl -s -F img=@"+dosya+" https://milis-linux.appspot.com/upload > "+dosya2)
+    link=open(dosya2,"r").read()
+    mesajveri=link.rstrip('\n')
+    print link
+    global bot
+    bot.gonder(mesajveri)
+    bliste=bot.kanal_liste()
     emit('kanala_gonder_cevap',{'data': mesajveri,'gonderen':gonderen,'kliste':bliste})
 
 @socketio.on('baglantikes_istegi', namespace='/irc')
