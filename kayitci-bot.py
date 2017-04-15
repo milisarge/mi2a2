@@ -27,6 +27,7 @@ def IrcConn():
                 servaddr = dizi[1].lstrip(":")
                 sendmsg("PONG "+servaddr)
             else:
+                print "----"
                 t = threading.Thread(target = console(buf))
                 t.start()
     print "bye"
@@ -53,6 +54,7 @@ def console(strdizi):
             Msg += i+" "
         Msg = Msg.strip() 
         logger(saat+"&nbsp; <b>"+Nick+"</b>&nbsp;"+remove_tags(Msg))
+        print "-2"
         #if Msg == ":VERSION":
         #   # \001VERSION #:#:#\001
         #   privmsg("\001VERSION pyircbot:v01:python2\001",Nick)
@@ -75,8 +77,10 @@ def sendmsg(msgtext):
 def logger(logmsg):
     tarih=time.strftime("%d-%m-%y")
     lock.acquire()
-    dosya = open("milisarge_log/"+tarih+".htm","a")
+    print "-"
+    dosya = open("log/"+tarih+".htm","w")
     dosya.write("<b>"+tarih+"</b>&nbsp;"+logmsg+"</br>")
+    print "--"
     dosya.close()
     lock.release()
 
