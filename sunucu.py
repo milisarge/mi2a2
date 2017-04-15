@@ -78,7 +78,7 @@ class MilisBot(irc.bot.SingleServerIRCBot):
 		for chname, chobj in self.channels.items():
 			users = sorted(chobj.users())
 		return users 
-            
+    '''       
     def do_command(self, e, cmd):
         print "kanal_mesaji: ",cmd
         nick = e.source.nick
@@ -104,8 +104,8 @@ class MilisBot(irc.bot.SingleServerIRCBot):
                 ip_quad_to_numstr(dcc.localaddress),
                 dcc.localport))
         else:
-            c.notice(nick, "anlasılmadı: " + cmd)
-
+            c.notice(nick, "anlaşılmadı: " + cmd)
+	'''
 '''
 def arkaplan_islem():
     # belli periyodlarda olay üretmek için
