@@ -4,6 +4,7 @@ import socket,sys,time,threading,os,re,datetime
 import sqlite3 as vt
 import codecs
 
+gitlog =  False
 kayitvt = "irckayit.db"
 IrcAddr = "irc.freenode.net"
 IrcNick = "irc_kayitci"
@@ -72,6 +73,8 @@ def console(strdizi):
         Msg = Msg.decode("utf-8")
         logger(saat+"&nbsp; <b>"+Nick+"</b>&nbsp;"+remove_tags(Msg))
         sqlkayit(time.strftime("%d-%m-%y %H:%M"),Nick,remove_tags(Msg))
+        if gitlog:
+			gitkayit()
         if Nick == "sahip" and Msg == ":!kill":
             global QUIT
             QUIT = 1
@@ -100,6 +103,17 @@ def sqlkayit(zaman,gonderen,mesaj):
 	vt_kaydet(zaman,gonderen,mesaj)
 	lock.release()
 
+def gitkayit():
+	lock.acquire()
+	os.system("./log/git-guncelle log")
+	lock.release()
+	
+def gitklon():
+	lock.acquire()
+	if os.path.exists("log/.git") is False:
+		os.system("git clone 127.0.0.1:8003/irclog log")
+	lock.release()
+	
 def remove_tags(text):
     TAG_RE = re.compile(r'<[^>]+>')
     return TAG_RE.sub('', text)    
