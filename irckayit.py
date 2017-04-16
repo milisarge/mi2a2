@@ -105,7 +105,7 @@ def sqlkayit(zaman,gonderen,mesaj):
 
 def gitkayit():
 	lock.acquire()
-	os.system("./log/git-guncelle log")
+	os.system("cd log && ./git-guncelle kayit && cd -")
 	lock.release()
 	
 def gitklon():
