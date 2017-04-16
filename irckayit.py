@@ -1,7 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 import socket,sys,time,threading,os,re,datetime
+import sqlite3 as vt
 
+kayitvt = "irckayit.db"
 IrcAddr = "irc.freenode.net"
 IrcNick = "irc_kayitci"
 IrcChan = "#milisarge"
@@ -27,11 +29,23 @@ def IrcConn():
                 servaddr = dizi[1].lstrip(":")
                 sendmsg("PONG "+servaddr)
             else:
-                print "----"
                 t = threading.Thread(target = console(buf))
                 t.start()
-    print "bye"
+    print "gule gule"
     sys.exit()
+    
+def vt_olustur():
+	baglanti = vt.connect(kayitvt)
+	with baglanti:
+		cur = baglanti.cursor()
+		cur.execute("DROP TABLE IF EXISTS kayit")
+		cur.execute("CREATE TABLE kayit ( id INTEGER PRIMARY KEY NOT NULL,zaman TIMESTAMP DEFAULT CURRENT_TIMESTAMP,gonderen VARCHAR(30) NOT NULL,mesaj TEXT NOT NULL);")
+
+def vt_kaydet(zaman,gonderen,mesaj):
+	baglanti = vt.connect(kayitvt)
+	with baglanti:
+		cur = baglanti.cursor()
+		cur.execute("INSERT INTO kayit (zaman,gonderen,mesaj) VALUES(?, ?,?)", [zaman,gonderen,mesaj])
 
 def console(strdizi):
     if len(sys.argv)>1:
@@ -42,7 +56,7 @@ def console(strdizi):
     Nick = bufNick[0].lstrip(":")
     kanal = textArray[2]
     ircmsg = textArray[3:]
-    #:frigg!~frigg@freenode/utility-bot/frigg PRIVMSG pycirc :VERSION
+    
     if Nick == IrcNick and textArray[1]=="JOIN":
         ip = textArray[0].split("@")
         global gIPaddr
@@ -54,10 +68,7 @@ def console(strdizi):
             Msg += i+" "
         Msg = Msg.strip() 
         logger(saat+"&nbsp; <b>"+Nick+"</b>&nbsp;"+remove_tags(Msg))
-        print "-2"
-        #if Msg == ":VERSION":
-        #   # \001VERSION #:#:#\001
-        #   privmsg("\001VERSION pyircbot:v01:python2\001",Nick)
+        sqlkayit(time.strftime("%d-%m-%y %H:%M"),Nick,remove_tags(Msg))
         if Nick == "sahip" and Msg == ":!kill":
             global QUIT
             QUIT = 1
@@ -73,24 +84,28 @@ def sendmsg(msgtext):
     Irc.send(msgtext+"\r\n")
     lock.release()
 
-
 def logger(logmsg):
     tarih=time.strftime("%d-%m-%y")
     lock.acquire()
-    print "-"
-    dosya = open("log/"+tarih+".htm","w")
+    dosya = open("log/"+tarih+".htm","a")
     dosya.write("<b>"+tarih+"</b>&nbsp;"+logmsg+"</br>")
-    print "--"
     dosya.close()
     lock.release()
+
+def sqlkayit(zaman,gonderen,mesaj):
+	lock.acquire()
+	vt_kaydet(zaman,gonderen,mesaj)
+	lock.release()
 
 def remove_tags(text):
     TAG_RE = re.compile(r'<[^>]+>')
     return TAG_RE.sub('', text)    
 
 if __name__ == "__main__":
-  try:
-   IrcConn()
-  except:
-   print "Unexpected error:", sys.exc_info()[0]
-
+	#try:
+	if os.path.exists(kayitvt) is False:
+		vt_olustur()
+	IrcConn()
+	#except:
+	print "hata:", sys.exc_info()[0]
+	
