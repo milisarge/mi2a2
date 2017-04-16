@@ -64,48 +64,27 @@ class MilisBot(irc.bot.SingleServerIRCBot):
         gonderen = e.source.nick
         mesaj = e.arguments
         socketio.emit('kanala_gonder_cevap',{'data': mesaj,'gonderen':gonderen,'kliste':bliste},namespace='/irc')
-        a = e.arguments[0].split(":", 1)
-        if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname()):
-            self.do_command(e, a[1].strip())
         return
             
     def gonder(self,mesaj):
         #self.connection.notice(None,mesaj)
         self.connection.privmsg("#milisarge",mesaj)
-        
+    
+    def rumuz_bilgi(self,rumuz):
+        #self.connection.notice(None,mesaj)
+        #self.connection.privmsg("#milisarge","/whois "+rumuz)
+        return self.connection.whois(rumuz)
+     
     def kanal_liste(self):
 		users=[]
 		for chname, chobj in self.channels.items():
 			users = sorted(chobj.users())
 		return users 
-    '''       
-    def do_command(self, e, cmd):
-        print "kanal_mesaji: ",cmd
-        nick = e.source.nick
-        c = self.connection
-
-        if cmd == "disconnect":
-            self.disconnect()
-        elif cmd == "die":
-            self.die()
-        elif cmd == "stats":
-            for chname, chobj in self.channels.items():
-                c.notice(nick, "--- Channel statistics ---")
-                c.notice(nick, "Channel: " + chname)
-                users = sorted(chobj.users())
-                c.notice(nick, "Users: " + ", ".join(users))
-                opers = sorted(chobj.opers())
-                c.notice(nick, "Opers: " + ", ".join(opers))
-                voiced = sorted(chobj.voiced())
-                c.notice(nick, "Voiced: " + ", ".join(voiced))
-        elif cmd == "dcc":
-            dcc = self.dcc_listen()
-            c.ctcp("DCC", nick, "CHAT chat %s %d" % (
-                ip_quad_to_numstr(dcc.localaddress),
-                dcc.localport))
-        else:
-            c.notice(nick, "anlaşılmadı: " + cmd)
-	'''
+	
+    def logcek(self):
+		komut="cd log && git pull && cd -"
+		os.system(komut)
+  
 '''
 def arkaplan_islem():
     # belli periyodlarda olay üretmek için
@@ -140,10 +119,13 @@ def sunucu_baglanti_olay(message):
 
 @socketio.on('kanala_gonder', namespace='/irc')
 def kanala_gonder(mesaj):
-    #session['receive_count'] = session.get('receive_count', 0) + 1
+    global bot
     gonderen=rumuz+" (sen)"
     mesajveri=mesaj['data']
-    global bot
+    if mesajveri=="/logcek":
+		#mesajveri=bot.rumuz_bilgi("irc_kayitci")
+		bot.logcek()
+		mesajveri="log cekildi"
     bot.gonder(mesajveri)
     bliste=bot.kanal_liste()
     #emit('kanala_gonder_cevap',{'data': message['data'], 'count': session['receive_count']})
