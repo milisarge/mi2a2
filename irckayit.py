@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 import socket,sys,time,threading,os,re,datetime
 import sqlite3 as vt
+import codecs
 
 kayitvt = "irckayit.db"
 IrcAddr = "irc.freenode.net"
@@ -88,7 +89,7 @@ def sendmsg(msgtext):
 def logger(logmsg):
     tarih=time.strftime("%d-%m-%y")
     lock.acquire()
-    dosya = open("log/"+tarih+".htm","a")
+    dosya = codecs.open("log/"+tarih+".htm","a")
     dosya.write("<b>"+tarih+"</b>&nbsp;"+logmsg+"</br>")
     dosya.close()
     lock.release()
