@@ -47,7 +47,7 @@ def vt_kaydet(zaman,gonderen,mesaj):
 	baglanti = vt.connect(kayitvt)
 	with baglanti:
 		cur = baglanti.cursor()
-		cur.execute("INSERT INTO kayit (zaman,gonderen,mesaj) VALUES(?, ?,?)", [zaman,gonderen,mesaj.decode("utf-8")])
+		cur.execute("INSERT INTO kayit (zaman,gonderen,mesaj) VALUES(?, ?,?)", [zaman,gonderen,mesaj])
 
 def console(strdizi):
     if len(sys.argv)>1:
@@ -69,6 +69,7 @@ def console(strdizi):
         for i in ircmsg:
             Msg += i+" "
         Msg = Msg.strip() 
+        Msg = Msg.decode("utf-8")
         logger(saat+"&nbsp; <b>"+Nick+"</b>&nbsp;"+remove_tags(Msg))
         sqlkayit(time.strftime("%d-%m-%y %H:%M"),Nick,remove_tags(Msg))
         if Nick == "sahip" and Msg == ":!kill":
@@ -89,7 +90,7 @@ def sendmsg(msgtext):
 def logger(logmsg):
     tarih=time.strftime("%d-%m-%y")
     lock.acquire()
-    dosya = codecs.open("log/"+tarih+".htm","a")
+    dosya = codecs.open("log/"+tarih+".htm","a","iso-8859_9")
     dosya.write("<b>"+tarih+"</b>&nbsp;"+logmsg+"</br>")
     dosya.close()
     lock.release()
