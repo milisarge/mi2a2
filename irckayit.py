@@ -42,10 +42,11 @@ def vt_olustur():
 		cur.execute("CREATE TABLE kayit ( id INTEGER PRIMARY KEY NOT NULL,zaman TIMESTAMP DEFAULT CURRENT_TIMESTAMP,gonderen VARCHAR(30) NOT NULL,mesaj TEXT NOT NULL);")
 
 def vt_kaydet(zaman,gonderen,mesaj):
+	mesaj=mesaj[1:]
 	baglanti = vt.connect(kayitvt)
 	with baglanti:
 		cur = baglanti.cursor()
-		cur.execute("INSERT INTO kayit (zaman,gonderen,mesaj) VALUES(?, ?,?)", [zaman,gonderen,mesaj])
+		cur.execute("INSERT INTO kayit (zaman,gonderen,mesaj) VALUES(?, ?,?)", [zaman,gonderen,mesaj.decode("utf-8")])
 
 def console(strdizi):
     if len(sys.argv)>1:
